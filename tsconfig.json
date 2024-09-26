@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+        "resolveJsonModule": true,
+        "target": "ES2022",
+        "module": "ES2022",
+        "moduleResolution": "node",
+        "allowJs": true,
+        "strict": false,
+        "skipLibCheck": true,
+        "esModuleInterop": true
+    },
+    "ts-node": {
+        "esm": true,
+        "experimentalSpecifierResolution": "node"
+    },
+    "include": ["src"]
+}
