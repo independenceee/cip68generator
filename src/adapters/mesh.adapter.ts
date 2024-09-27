@@ -1,26 +1,39 @@
-import { BrowserWallet, IFetcher, MeshTxBuilder, MeshWallet } from "@meshsdk/core";
+import { BrowserWallet, IFetcher, MeshTxBuilder, MeshWallet, UTxO } from "@meshsdk/core";
 
 export class MeshAdapter {
-    meshTxBuilder: MeshTxBuilder;
-    wallet?: BrowserWallet | MeshWallet;
-    fetcher?: IFetcher;
-    stakeCredential?: string;
-    networkId?: number;
-    version?: number;
+    protected meshTxBuilder: MeshTxBuilder;
+    protected wallet: BrowserWallet | MeshWallet;
+    protected fetcher: IFetcher;
 
     constructor({
         meshTxBuilder,
         fetcher,
-        version,
-        networkId,
+        wallet,
     }: {
         meshTxBuilder: MeshTxBuilder;
         fetcher: IFetcher;
-        version?: number;
-        networkId?: number;
-        wallet?: BrowserWallet | MeshWallet;
-        stakeCredential?: string;
+        wallet: BrowserWallet | MeshWallet;
     }) {
         this.meshTxBuilder = meshTxBuilder;
+        this.wallet = wallet;
+        this.fetcher = fetcher;
     }
+
+    protected getWalletForTx = async function () {
+        const utxos = await this.wallet.getUtxos();
+        const collateral = await this.wallet.getCollateral();
+        const walletAddress = await this.wallet.getChangeAddress();
+
+        if (!utxos || utxos?.length === 0) {
+            throw new Error("No utxos found");
+        }
+        if (!collateral || collateral?.length === 0) {
+            throw new Error("No collateral found");
+        }
+        if (!walletAddress) {
+            throw new Error("No wallet address found");
+        }
+
+        return { utxos, collateral, walletAddress };
+    };
 }
