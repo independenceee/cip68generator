@@ -1,6 +1,6 @@
 {
     "name": "@independenceee/cip68generator",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Open source dynamic assets (Token/NFT) generator (CIP68)",
     "main": "src/index.ts",
     "type": "module",

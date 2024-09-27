@@ -6,7 +6,6 @@ import {
     KoiosProvider,
     MeshTxBuilder,
     MeshWallet,
-    metadataToCip68,
 } from "@meshsdk/core";
 import { Cip68Contract } from "../src";
 
@@ -35,13 +34,13 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
     });
 
     test("Mint", async function () {
-        const cip68Contract = new Cip68Contract({
+        const cip68Contract: Cip68Contract = new Cip68Contract({
             fetcher: blockfrostProvider,
             wallet: wallet,
             meshTxBuilder: meshTxBuilder,
         });
 
-        const unsignedTx = await cip68Contract.mint("Nguyen Duy Khanh", "1", {
+        const unsignedTx: string = await cip68Contract.mint("Nguyen Duy Khanh", "1", {
             name: "ERC721",
             image: "ipfs://QmRzicpReutwCkM6aotuKjErFCUD213DpwPq6ByuzMJaua",
             mediaType: "image/jpg",
