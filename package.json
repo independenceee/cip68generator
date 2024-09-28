@@ -1,6 +1,6 @@
 {
     "name": "@independenceee/cip68generator",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "description": "Open source dynamic assets (Token/NFT) generator (CIP68)",
     "main": "src/index.ts",
     "type": "module",
@@ -30,7 +30,7 @@
         "remove"
     ],
     "author": "independenceee",
-    "license": "ISC",
+    "license": "Apache-2.0",
     "bugs": {
         "url": "https://github.com/independenceee/cip68generator/issues"
     },

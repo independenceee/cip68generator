@@ -16,7 +16,7 @@ import {
 import { readValidator } from "../utils";
 import { title } from "../configs";
 
-export class Cip68Contract extends MeshAdapter implements ICip68Contract {
+export class Cip68Contract extends MeshAdapter {
     mint = async function (tokenName: string, quantity: string, metadata: any): Promise<string> {
         const { walletAddress, utxos, collateral } = await this.getWalletForTx();
         const mintCompileCode: string = readValidator(title.mint);
