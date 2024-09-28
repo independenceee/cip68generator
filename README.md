@@ -31,6 +31,16 @@ const meshTxBuilder: MeshTxBuilder = new MeshTxBuilder({
     evaluator: blockfrostProvider,
     submitter: blockfrostProvider,
 });
+
+const wallet: MeshWallet = new MeshWallet({
+    networkId: 0,
+    fetcher: blockfrostProvider,
+    submitter: blockfrostProvider,
+    key: {
+        type: "root",
+        bech32: "<Root-Private-Key>",
+    },
+});
 ```
 
 ## Mint: Create new NFTs with customizable metadata, adhering to Cardano standards.
@@ -55,6 +65,76 @@ const unsignedTx = await cip68Contract.mint({
     },
 });
 
+const signedTx = await wallet.signTx(unsignedTx, true);
+const txHash = await wallet.submitTx(signedTx);
+```
+
+## Burn: Permanently remove NFTs from circulation, controlling supply.
+
+```ts
+import { Cip68Contract } from "@independenceee/cip68generator";
+
+const cip68Contract: Cip68Contract = new Cip68Contract({
+    wallet: wallet,
+    fetcher: blockfrostProvider,
+    meshTxBuilder: meshTxBuilder,
+});
+
+const unsignedTx: string = await cip68Contract.burn({
+    txHash: "<Tx-Hash-Template>",
+    quantity: "-1",
+    assetName: "CIP68 Generators",
+});
+const signedTx = await wallet.signTx(unsignedTx, true);
+const txHash = await wallet.submitTx(signedTx);
+```
+
+## Update: Modify the metadata of existing NFTs without changing their identity.
+
+```ts
+import { Cip68Contract } from "@independenceee/cip68generator";
+
+const cip68Contract = new Cip68Contract({
+    fetcher: blockfrostProvider,
+    wallet: wallet,
+    meshTxBuilder: meshTxBuilder,
+});
+
+const unsignedTx: string = await cip68Contract.update({
+    txHash: "<Tx-Hash-Template>",
+    quantity: "1",
+    assetName: "CIP68 Generators",
+    metadata: {
+        name: "CIP68 Generators",
+        image: "ipfs://QmRzicpReutwCkM6aotuKjErFCUD213DpwPq6ByuzMJaua",
+        mediaType: "image/jpg",
+        description: "Open source dynamic assets (Token/NFT) generator (CIP68)",
+    },
+});
+const signedTx = await wallet.signTx(unsignedTx, true);
+const txHash = await wallet.submitTx(signedTx);
+```
+
+## Remove: Change metadata to retire NFTs from active use without destroying them.
+
+```ts
+import { Cip68Contract } from "@independenceee/cip68generator";
+
+const cip68Contract = new Cip68Contract({
+    fetcher: blockfrostProvider,
+    wallet: wallet,
+    meshTxBuilder: meshTxBuilder,
+});
+
+const unsignedTx: string = await cip68Contract.update({
+    txHash: "<Tx-Hash-Template>",
+    quantity: "1",
+    assetName: "CIP68 Generators",
+    metadata: {
+        name: "CIP68 Generators",
+        image: "ipfs://QmRzicpReutwCkM6aotuKjErFCUD213DpwPq6ByuzMJaua",
+    },
+});
 const signedTx = await wallet.signTx(unsignedTx, true);
 const txHash = await wallet.submitTx(signedTx);
 ```

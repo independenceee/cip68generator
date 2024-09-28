@@ -1,1 +1,1 @@
-export * from "./txbuilders/cip68.txbuilder";
+export * from "./mesh/cip68.mesh";
