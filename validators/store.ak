@@ -13,23 +13,9 @@ validator store {
     output_reference: OutputReference,
     transaction: Transaction,
   ) {
-    let Transaction { inputs, outputs, .. } = transaction
-    expect Some(input) = find_input(inputs, output_reference)
-    let reference_nft = input.output.value |> without_lovelace()
     when redeemer is {
-      Update -> {
-        let validation_output =
-          output_by_addr_value(outputs, input.output.address, reference_nft)
-
-        check_output_utxo(validation_output)
-      }
-
-      Remove -> {
-        let validation_output = output_by_value(outputs, reference_nft)
-
-        check_output_utxo(validation_output)
-      }
-
+      Update -> True
+      Remove -> True
       Redeem -> True
     }
   }

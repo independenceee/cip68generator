@@ -36,4 +36,11 @@ export class MeshAdapter {
 
         return { utxos, collateral, walletAddress };
     };
+
+    protected getUtxoForTx = async function (address: string, txHash: string) {
+        const utxos: UTxO[] = await this.fetcher.fetchAddressUTxOs(address);
+        return utxos.find(function (utxo: UTxO) {
+            return utxo.input.txHash === txHash;
+        });
+    };
 }
