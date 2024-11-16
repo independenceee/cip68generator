@@ -114,27 +114,3 @@ const unsignedTx: string = await cip68Contract.update({
 const signedTx = await wallet.signTx(unsignedTx, true);
 const txHash = await wallet.submitTx(signedTx);
 ```
-
-## Remove: Change metadata to retire NFTs from active use without destroying them.
-
-```ts
-import { Cip68Contract } from "@independenceee/cip68generator";
-
-const cip68Contract = new Cip68Contract({
-    fetcher: blockfrostProvider,
-    wallet: wallet,
-    meshTxBuilder: meshTxBuilder,
-});
-
-const unsignedTx: string = await cip68Contract.update({
-    txHash: "<Tx-Hash-Template>",
-    quantity: "1",
-    assetName: "CIP68 Generators",
-    metadata: {
-        name: "CIP68 Generators",
-        image: "ipfs://QmRzicpReutwCkM6aotuKjErFCUD213DpwPq6ByuzMJaua",
-    },
-});
-const signedTx = await wallet.signTx(unsignedTx, true);
-const txHash = await wallet.submitTx(signedTx);
-```
