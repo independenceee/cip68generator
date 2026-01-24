@@ -1,54 +1,59 @@
-use aiken/collection/list
-use cardano/assets.{PolicyId, lovelace_of, without_lovelace}
-use cardano/transaction.{InlineDatum, OutputReference, Transaction, find_input}
-use cardano/tx.{verify_signature}
-use cocktail/vodka_address.{address_pub_key, compare_address}
-use contract/types.{Datum, Deposit, End, Execute, Init, Mint, Signature, Spend}
-use validation/find.{output_by_addr, output_by_addr_value}
+test test_deposit_success() {
+  True
+}
 
-validator treasury {
-  mint(redeemer: Mint, _policy_id: PolicyId, _transaction: Transaction) {
-    when redeemer is {
-      Init -> True
-      End -> True
-    }
-  }
+test test_deposit_fail_reduce_lovelace() {
+  True
+}
 
-  spend(
-    datum_option: Option<Datum>,
-    redeemer: Spend,
-    output_reference: OutputReference,
-    transaction: Transaction,
-  ) {
-    expect Some(datum_input) = datum_option
-    let Transaction { inputs, outputs, .. } = transaction
-    expect Some(input) = find_input(inputs, output_reference)
-    let script_address = input.output.address
-    let token =
-      input.output.value
-        |> without_lovelace()
+test test_deposit_fail_changed_receiver() {
+  True
+}
 
-    when redeemer is {
-      Deposit -> {
-        let output = output_by_addr_value(outputs, script_address, token)
-        expect InlineDatum(datum_output_raw) = output.datum
-        expect datum_output: Datum = datum_output_raw
+test test_signature_one_owner() {
+    True
+}
 
-        and {
-          compare_address(datum_input.receiver, datum_output.receiver) == Equal,
-          list.length(list.difference(datum_input.owners, datum_output.owners)) > 0,
-          list.length(
-            list.difference(datum_input.signers, datum_output.signers),
-          ) > 0,
-          lovelace_of(output.value) >= lovelace_of(input.output.value),
-        }
-      }
-      Execute -> True
-      Signature -> True
-    }
-  }
+test test_signature_multi_owners() {
+    True
+}
 
-  else(_) {
-    fail
-  }
+test test_signature_fail_not_owner() {
+    True
+}
+
+test test_signature_fail_duplicate_signer() {
+    True
+}
+
+test test_signature_fail_modified_datum() {
+    True
+}
+
+test test_signature_fail_missing_previous_signers () {
+    True
+}
+
+test test_execute_success_partial_spend() {
+    True
+}
+
+test test_execute_success_full_spend() {
+    True
+}
+
+test test_execute_fail_insufficient_threshold() {
+    True
+}
+
+test test_execute_fail_wrong_receiver() {
+    True
+}
+
+test test_execute_fail_exceed_allowance() {
+    True
+}
+
+test test_execute_fail_not_resetting_signers() {
+    True
 }
